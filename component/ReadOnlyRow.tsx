@@ -1,32 +1,31 @@
+import { TableRow, TableCell } from "@material-ui/core";
 import React from "react";
 const ReadOnlyRow = ({ key, tickets, handleEditClick, handleDeleteClick }) => {
   return (
-    <tr key={key}>
-      <td>{tickets.title}</td>
-      <td>{tickets.services}</td>
-      <td>{tickets.note}</td>
+    <TableRow key={key}>
+      <TableCell>{tickets.title}</TableCell>
+      <TableCell>{tickets.services}</TableCell>
+      <TableCell>{tickets.note}</TableCell>
       {tickets.status.toString() === "Pending" ? (
-        <td className="texttd1">{tickets.status}</td>
+        <TableCell className="texttd1">{tickets.status}</TableCell>
       ) : (
-        <td className="texttd">{tickets.status}</td>
+        <TableCell className="texttd">{tickets.status}</TableCell>
       )}
-      <td>
+      <TableCell>
         <button
           className="editbut"
-          type="button"
           onClick={(event) => handleEditClick(event, tickets)}
         >
           Edit
         </button>
         <button
           className="deletebut"
-          type="button"
-          onClick={() => handleDeleteClick(tickets.id)}
+          onClick={() => handleDeleteClick(event, tickets.id)}
         >
           Delete
         </button>
-      </td>
-    </tr>
+      </TableCell>
+    </TableRow>
   );
 };
 

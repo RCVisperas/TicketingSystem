@@ -80,7 +80,7 @@ const Navigation = ({ tickets, settickets }) => {
       cursor: not-allowed;
     }
   `;
-
+  //category
   const [Cate, setCate] = useState([]);
 
   return (
@@ -93,7 +93,6 @@ const Navigation = ({ tickets, settickets }) => {
         <div>
           <TicketComponent
             cate={Cate}
-            setcate={setCate}
             ticketing={tickets}
             setticketing={settickets}
           />

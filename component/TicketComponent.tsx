@@ -20,20 +20,13 @@ const Item = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(0),
   margin: 16,
   textAlign: "center",
+
+  width: "50%",
+
   color: theme.palette.text.secondary,
 }));
 
 const TicketComponent = ({ cate, ticketing, setticketing }) => {
-  const [Tick, setTick] = useState("");
-  const [Messages, setMessage] = useState("");
-  const InputCat = (event) => {
-    event.preventDefault();
-    setTick(event.target.value);
-  };
-  const InputMessage = (event) => {
-    event.preventDefault();
-    setMessage(event.target.value);
-  };
   const ITEM_HEIGHT = 48;
   const ITEM_PADDING_TOP = 8;
   const MenuProps = {
@@ -44,6 +37,16 @@ const TicketComponent = ({ cate, ticketing, setticketing }) => {
       },
     },
   };
+  const [Tick, setTick] = useState("");
+  const [Messages, setMessage] = useState("");
+  const InputTick = (event) => {
+    event.preventDefault();
+    setTick(event.target.value);
+  };
+  const InputMessage = (event) => {
+    event.preventDefault();
+    setMessage(event.target.value);
+  };
 
   const [Service, setService] = React.useState<string[]>([]);
 
@@ -53,7 +56,7 @@ const TicketComponent = ({ cate, ticketing, setticketing }) => {
     } = event;
     setService(
       // On autofill we get a stringified value.
-      typeof value === "string" ? value.split(",") : value
+      typeof value === "string" ? value.split(" ") : value
     );
   };
 
@@ -64,7 +67,7 @@ const TicketComponent = ({ cate, ticketing, setticketing }) => {
       autoClose: 1500,
     });
     const newTicket = {
-      id: new Date().getTime(),
+      id: new Date().getTime().toString(),
       title: Tick,
       services: Service.toString().split(" "),
       note: Messages,
@@ -77,66 +80,78 @@ const TicketComponent = ({ cate, ticketing, setticketing }) => {
   }
   return (
     <div>
-      <Stack>
+      <Stack
+        sx={{
+          ml: "30%",
+        }}
+      >
         <Item>
           <Typography>New Ticket</Typography>
         </Item>
+        <form onSubmit={handleSubmit}>
+          <Item>
+            <TextField
+              id="TicketTitle"
+              label="Ticket Title"
+              sx={{
+                width: "100%",
+              }}
+              required
+              value={Tick}
+              onChange={InputTick}
+            />
+          </Item>
+          <Item>
+            <FormControl sx={{ width: "100%" }}>
+              <InputLabel id="demo-multiple-checkbox-label">
+                Services
+              </InputLabel>
+              <Select
+                labelId="demo-multiple-checkbox-label"
+                id="demo-multiple-checkbox"
+                multiple
+                value={Service}
+                required
+                onChange={handleChange}
+                input={<OutlinedInput label="SERVICES" />}
+                renderValue={(selected) => selected.join(", ")}
+                MenuProps={MenuProps}
+              >
+                {cate.map((cateval, index) => (
+                  <MenuItem key={index} value={cateval}>
+                    <ListItemText>
+                      <Typography>{cateval}</Typography>
+                    </ListItemText>
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
 
-        <Item>
-          <TextField
-            id="TicketTitle"
-            label="Ticket Title"
-            sx={{
-              width: "100%",
-            }}
-            value={Tick}
-            onChange={InputCat}
-          />
-        </Item>
-        <Item>
-          <FormControl sx={{ width: "100%" }}>
-            <InputLabel id="demo-multiple-checkbox-label">Services</InputLabel>
-            <Select
-              labelId="demo-multiple-checkbox-label"
-              id="demo-multiple-checkbox"
-              multiple
-              value={Service}
-              onChange={handleChange}
-              input={<OutlinedInput label="SERVICES" />}
-              renderValue={(selected) => selected.join(", ")}
-              MenuProps={MenuProps}
-            >
-              {cate.map((cateval, index) => (
-                <MenuItem key={index} value={cateval}>
-                  <ListItemText primary={cateval} />
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+            <TextField
+              id="outlined-multiline-static"
+              label="Message"
+              multiline
+              required
+              rows={4}
+              sx={{
+                width: "100%",
+                marginTop: "5px",
+              }}
+              value={Messages}
+              onChange={InputMessage}
+            />
+          </Item>
 
-          <TextField
-            id="outlined-multiline-static"
-            label="Message"
-            multiline
-            rows={4}
-            sx={{
-              width: "100%",
-              marginTop: "5px",
-            }}
-            value={Messages}
-            onChange={InputMessage}
-          />
-        </Item>
-
-        <Item>
           <Button
             variant="outlined"
-            sx={{ width: "100%" }}
-            onClick={handleSubmit}
+            type={"submit"}
+            sx={{
+              marginLeft: 2,
+            }}
           >
             Submit Ticket
           </Button>
-        </Item>
+        </form>
       </Stack>
     </div>
   );

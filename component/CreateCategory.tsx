@@ -16,17 +16,21 @@ const Item = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(0),
   margin: 16,
   textAlign: "center",
+  width: "50%",
+
   color: theme.palette.text.secondary,
 }));
 
 const CreateCategory = ({ cate, setcate }) => {
+  //useState for input
   const [Value, setValue] = useState("");
 
   const InputEventCat = (event) => {
     setValue(event.target.value);
   };
 
-  const listsubmit = () => {
+  const listsubmit = (event) => {
+    event.preventDefault();
     toast.success("Category Successfully Created", {
       position: toast.POSITION.BOTTOM_RIGHT,
       autoClose: 1500,
@@ -49,53 +53,62 @@ const CreateCategory = ({ cate, setcate }) => {
   };
   return (
     <div>
-      <Stack>
-        <Item>
-          <Typography>New Category</Typography>
-        </Item>
+      <Stack
+        sx={{
+          ml: "30%",
+        }}
+      >
+        <form onSubmit={listsubmit}>
+          <Item>
+            <Typography>New Category</Typography>
+          </Item>
+          <Item>
+            <TextField
+              id="CategoryName"
+              label="Category Name"
+              value={Value}
+              required
+              sx={{
+                width: "100%",
+              }}
+              onChange={InputEventCat}
+            />
+          </Item>
 
-        <Item>
-          <TextField
-            id="CategoryName"
-            label="Category Name"
-            sx={{ width: "100%" }}
-            value={Value}
-            onChange={InputEventCat}
-          />
-        </Item>
-        <Item>
           <Button
+            type={"submit"}
             variant="outlined"
-            sx={{ width: "100%" }}
-            onClick={listsubmit}
+            sx={{
+              marginLeft: 2,
+            }}
           >
             Submit Category
           </Button>
-        </Item>
+        </form>
+
+        <div>
+          <Item>
+            <Typography>Categories</Typography>
+
+            <List>
+              {cate.length >= 1 ? (
+                cate.map((cateval, index) => {
+                  return (
+                    <CategoryList
+                      text={cateval}
+                      id={index}
+                      key={index}
+                      onSelect={deleteItems}
+                    />
+                  );
+                })
+              ) : (
+                <Typography>No Categories Found</Typography>
+              )}
+            </List>
+          </Item>
+        </div>
       </Stack>
-
-      <div>
-        <Item>
-          <Typography>Categories</Typography>
-
-          <List>
-            {cate.length >= 1 ? (
-              cate.map((cateval, index) => {
-                return (
-                  <CategoryList
-                    text={cateval}
-                    id={index}
-                    key={index}
-                    onSelect={deleteItems}
-                  />
-                );
-              })
-            ) : (
-              <Typography>No Categories Found</Typography>
-            )}
-          </List>
-        </Item>
-      </div>
     </div>
   );
 };

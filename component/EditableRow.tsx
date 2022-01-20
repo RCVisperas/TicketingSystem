@@ -1,5 +1,8 @@
 import React from "react";
+import TableCell from "@mui/material/TableCell";
+import TableRow from "@mui/material/TableRow";
 
+import TextField from "@mui/material/TextField";
 const EditableRow = ({
   editFormData,
   handleEditFormChange,
@@ -7,48 +10,54 @@ const EditableRow = ({
   handleFinihedForm,
 }) => {
   return (
-    <tr>
-      <td>
-        <input
+    <TableRow>
+      <TableCell>
+        <TextField
           type="text"
-          required="required"
+          required
           placeholder="Enter a title..."
           name="title"
           value={editFormData.title}
           onChange={handleEditFormChange}
-        ></input>
-      </td>
-      <td>
-        <input
+        ></TextField>
+      </TableCell>
+      <TableCell>
+        <TextField
           type="text"
-          required="required"
+          required
           placeholder="Enter a Services"
           name="services"
           value={editFormData.services}
           onChange={handleEditFormChange}
-        ></input>
-      </td>
-      <td>
-        <input
-          type="text"
-          required="required"
-          placeholder="Enter a Message"
+        ></TextField>
+      </TableCell>
+      <TableCell>
+        <TextField
+          id="outlined-multiline-static"
+          placeholder="Message"
+          multiline
+          rows={4}
+          sx={{
+            width: "100%",
+            marginTop: "5px",
+          }}
+          required
           name="note"
           value={editFormData.note}
           onChange={handleEditFormChange}
-        ></input>
-      </td>
-      <td>
-        <input
+        ></TextField>
+      </TableCell>
+      <TableCell>
+        <TextField
           type="text"
           name="status"
-          required="required"
+          required
           value={editFormData.status}
           disabled={true}
           onChange={handleEditFormChange}
-        ></input>
-      </td>
-      <td>
+        ></TextField>
+      </TableCell>
+      <TableCell>
         <button className="savebut" type="submit">
           Save
         </button>
@@ -58,12 +67,12 @@ const EditableRow = ({
         <button
           className="finishbut"
           type="button"
-          onClick={() => handleFinihedForm(editFormData.id)}
+          onClick={() => handleFinihedForm(event, editFormData.id)}
         >
           Finished
         </button>
-      </td>
-    </tr>
+      </TableCell>
+    </TableRow>
   );
 };
 
